@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./grandma-tour-back
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grandma-tour-back:/app
+      - /app/node_modules
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=grandma_secret
+      - DB_NAME=grandma_tour
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: ./grandma-tour-front
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./grandma-tour-front:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true # for vite hot reload on some OS/docker combo
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: grandma_secret
+      MYSQL_DATABASE: grandma_tour
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
