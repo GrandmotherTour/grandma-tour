@@ -1,3 +1,5 @@
+//  API 요청/응답 처리
+
 const recommendationService = require("./service");
 
 async function getRecommendations(req, res, next) {
@@ -11,7 +13,10 @@ async function getRecommendations(req, res, next) {
       });
     }
 
-    const result = await recommendationService.getRecommendations(surveyId, topN);
+    const result = await recommendationService.getRecommendations(
+      surveyId,
+      topN
+    );
 
     return res.json({
       surveyId,
