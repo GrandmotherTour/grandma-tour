@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
+const regionRouter = require('./features/region/region.route');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/regions', regionRouter);
 
 // 기본 라우트
 app.get('/', (req, res) => {
