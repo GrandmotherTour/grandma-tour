@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const recommendationRoutes = require("./features/recommendations/routes");
+const regionRouter = require('./features/region/region.route');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/regions', regionRouter);
 
 app.use("/api/recommendations", recommendationRoutes);
 
