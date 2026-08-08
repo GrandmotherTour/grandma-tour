@@ -24,11 +24,42 @@ router.get("/", async (req, res) => {
 
         console.error("지역 목록 조회 오류:", error);
 
+
         // ⑥ 서버 오류 상태 코드와 메시지 응답하기
         res.status(500).json({
             message: "지역 목록을 불러오지 못했습니다."
         });
     }
 });
+
+// 지역 상세 조회
+router.get("/:id", async (req, res) => {
+
+    try {
+
+        // URL에서 지역 id 가져오기
+        const 
+
+
+        // DB에서 해당 id의 지역 조회하기
+
+
+        // 해당 지역이 없으면 404 응답하기
+
+
+        // 조회한 지역 정보 응답하기
+
+
+    } catch (error) {
+
+        console.error("지역 상세 조회 오류:", error);
+
+        res.status(500).json({
+            message: "지역 정보를 불러오지 못했습니다."
+        });
+    }
+});
+
+
 // router를 app.js에서 쓸 수 있도록 내보내기
 module.exports = router;

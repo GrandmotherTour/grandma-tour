@@ -1,3 +1,5 @@
+// repository로 데이터 가져오고 알고리즘 실행
+
 const path = require("path");
 const { spawn } = require("child_process");
 const recommendationRepository = require("./repository");
