@@ -38,17 +38,26 @@ router.get("/:id", async (req, res) => {
     try {
 
         // URL에서 지역 id 가져오기
-        const 
+        const regionId = req.params.id;
 
 
         // DB에서 해당 id의 지역 조회하기
+        const [rows] = await pool.query(
+        "SELECT * FROM regions WHERE id = ?",
+        [regionId]
+        );
 
 
         // 해당 지역이 없으면 404 응답하기
+        if (rows.length === 0) {
 
+            return res.status(404).json({
+                message: "지역을 찾을 수 없습니다."
+            });
 
+        }
         // 조회한 지역 정보 응답하기
-
+        res.json(rows[0]);
 
     } catch (error) {
 
