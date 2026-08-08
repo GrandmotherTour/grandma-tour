@@ -12,7 +12,7 @@ services:
       - DB_HOST=mysql
       - DB_USER=root
       - DB_PASSWORD=grandma_secret
-      - DB_NAME=grandma_tour
+      - DB_NAME=halmae_tour
     depends_on:
       - mysql
 
@@ -33,7 +33,7 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: grandma_secret
-      MYSQL_DATABASE: grandma_tour
+      MYSQL_DATABASE: halmae_tour
     volumes:
       - mysql_data:/var/lib/mysql
 
