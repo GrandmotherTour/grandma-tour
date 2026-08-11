@@ -68,6 +68,32 @@ router.get("/:id", async (req, res) => {
         });
     }
 });
+// 지역별 관광 포인트 목록 조회
+router.get("/:id/points", async (req, res) => {
+
+    try {
+
+        // ① URL에서 지역 id 가져오기
+        const regionId = req.params.id;
+
+        // ② 해당 지역에 속한 관광 포인트 조회
+        const [rows] = await pool.query(
+            "SELECT * FROM regions WHERE id = ?",
+            [regionId]
+        );
+
+        // ③ 조회 결과 응답
+        res.json(row);
+
+    } catch (error) {
+
+        console.error("지역별 관광 포인트 조회 오류:", error);
+
+        res.status(500).json({
+            message: "관광 포인트 목록을 불러오지 못했습니다."
+        });
+    }
+});
 
 
 // router를 app.js에서 쓸 수 있도록 내보내기
