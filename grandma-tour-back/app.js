@@ -8,8 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/regions', regionRouter);
-
 app.use("/api/recommendations", recommendationRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("할매투어 백엔드 서버가 정상적으로 작동 중입니다!");
