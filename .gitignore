@@ -31,3 +31,7 @@ build/
 *.njsproj
 *.sln
 *.sw?
+
+# 로컬 산출물 (배포/패치)
+*.patch
+*.bundle
