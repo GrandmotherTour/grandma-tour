@@ -75,13 +75,27 @@ body {
 .login-card form { display: grid; gap: 8px; }
 .login-card label { font-size: 14px; font-weight: 700; }
 .login-card input, .login-card button { box-sizing: border-box; width: 100%; padding: 14px; border-radius: 14px; font: inherit; }
-.login-card input { border: 1px solid #ead9bf; background: white; margin-bottom: 8px; }
+.login-card input {
+  border: 1px solid #ead9bf;
+  background: white;
+  color: #4a3728;
+  color-scheme: light;
+  margin-bottom: 8px;
+}
+.login-card input::placeholder { color: #9b8c7a; opacity: 1; }
 .login-card button { border: 0; background: #ff8a4c; color: white; font-weight: 700; cursor: pointer; }
 .login-error { color: #c0432e; font-size: 14px; margin: 0; }
 .login-divider { margin: 24px 0; color: #9b8c7a; text-align: center; font-size: 14px; }
 .login-card .google-login { background: white; border: 1px solid #ead9bf; color: #4a3728; }
 .login-signup { margin: 24px 0 0; text-align: center; font-size: 14px; }
 .login-signup a { color: #d96029; font-weight: 700; }
+.input-action-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.input-action-row input { margin-bottom: 0; }
+.input-action-row button { width: auto; flex: 0 0 auto; padding-inline: 12px; font-size: 14px; }
+.register-message { color: #397448; font-size: 14px; margin: 0; }
+.password-match, .password-mismatch { margin: -2px 0 6px; font-size: 13px; }
+.password-match { color: #397448; }
+.password-mismatch { color: #c0432e; }
 
 #root {
   width: 1126px;

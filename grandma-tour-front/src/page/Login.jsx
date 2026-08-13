@@ -1,21 +1,21 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from './useAuth'
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './useAuth';
 
 export default function LoginPage() {
-  const navigate = useNavigate()
-  const { login } = useAuth()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    setError('')
+    event.preventDefault();
+    setError('');
 
     if (!email || !password) {
-      setError('이메일과 비밀번호를 모두 입력해 주세요.')
-      return
+      setError('이메일과 비밀번호를 모두 입력해 주세요.');
+      return;
     }
 
     try {
@@ -23,25 +23,27 @@ export default function LoginPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-      })
-      const data = await response.json()
+      });
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || '로그인에 실패했습니다.')
+        throw new Error(data.message || '로그인에 실패했습니다.');
       }
 
-      login(data.user)
-      if (data.token) localStorage.setItem('token', data.token)
-      navigate('/main', { replace: true })
+      login(data.user);
+      if (data.token) localStorage.setItem('token', data.token);
+      navigate('/main', { replace: true });
     } catch (requestError) {
-      setError(requestError.message || '로그인 중 문제가 발생했어요.')
+      setError(requestError.message || '로그인 중 문제가 발생했어요.');
     }
-  }
+  };
 
   return (
     <main className="login-page">
       <section className="login-card" aria-labelledby="login-title">
-        <div className="login-logo" aria-hidden="true">👵</div>
+        <div className="login-logo" aria-hidden="true">
+          👵
+        </div>
         <h1 id="login-title">할매투어</h1>
 
         <form onSubmit={handleSubmit}>
@@ -70,13 +72,17 @@ export default function LoginPage() {
         </form>
 
         <div className="login-divider">또는</div>
-        <button type="button" className="google-login" onClick={() => alert('구글 로그인 연동 기능 준비 중입니다.')}>
-          🔎 구글로 계속하기
+        <button
+          type="button"
+          className="google-login"
+          onClick={() => alert('구글 로그인 연동 기능 준비 중입니다.')}
+        >
+          구글로 계속하기
         </button>
         <p className="login-signup">
           아직 계정이 없으신가요? <Link to="/register">회원가입</Link>
         </p>
       </section>
     </main>
-  )
+  );
 }
