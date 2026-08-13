@@ -80,6 +80,8 @@ body {
 .login-error { color: #c0432e; font-size: 14px; margin: 0; }
 .login-divider { margin: 24px 0; color: #9b8c7a; text-align: center; font-size: 14px; }
 .login-card .google-login { background: white; border: 1px solid #ead9bf; color: #4a3728; }
+.login-signup { margin: 24px 0 0; text-align: center; font-size: 14px; }
+.login-signup a { color: #d96029; font-weight: 700; }
 
 #root {
   width: 1126px;

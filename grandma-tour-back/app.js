@@ -7,6 +7,21 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body ?? {};
+
+  if (!email || !password) {
+    return res.status(400).json({
+      message: 'Email and password are required.',
+    });
+  }
+
+  return res.json({
+    user: { name: email.split('@')[0] || 'Traveler', email },
+    token: 'local-development-token',
+  });
+});
 app.use('/api/regions', regionRouter);
 
 app.use("/api/recommendations", recommendationRoutes);

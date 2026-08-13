@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from './useAuth'
 
 export default function LoginPage() {
@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     setError('')
 
@@ -18,8 +18,24 @@ export default function LoginPage() {
       return
     }
 
-    login({ name: '민서', email })
-    navigate('/main', { replace: true })
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || '로그인에 실패했습니다.')
+      }
+
+      login(data.user)
+      if (data.token) localStorage.setItem('token', data.token)
+      navigate('/main', { replace: true })
+    } catch (requestError) {
+      setError(requestError.message || '로그인 중 문제가 발생했어요.')
+    }
   }
 
   return (
@@ -57,6 +73,9 @@ export default function LoginPage() {
         <button type="button" className="google-login" onClick={() => alert('구글 로그인 연동 기능 준비 중입니다.')}>
           🔎 구글로 계속하기
         </button>
+        <p className="login-signup">
+          아직 계정이 없으신가요? <Link to="/register">회원가입</Link>
+        </p>
       </section>
     </main>
   )
