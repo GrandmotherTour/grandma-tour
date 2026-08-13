@@ -54,6 +54,33 @@ body {
   margin: 0;
 }
 
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #eae2d6;
+}
+
+.login-card {
+  width: min(100%, 420px);
+  padding: 48px 32px;
+  border-radius: 28px;
+  background: #fbf3e7;
+  box-sizing: border-box;
+}
+
+.login-logo { font-size: 48px; text-align: center; }
+.login-card h1 { text-align: center; font-size: 28px; margin: 12px 0 32px; }
+.login-card form { display: grid; gap: 8px; }
+.login-card label { font-size: 14px; font-weight: 700; }
+.login-card input, .login-card button { box-sizing: border-box; width: 100%; padding: 14px; border-radius: 14px; font: inherit; }
+.login-card input { border: 1px solid #ead9bf; background: white; margin-bottom: 8px; }
+.login-card button { border: 0; background: #ff8a4c; color: white; font-weight: 700; cursor: pointer; }
+.login-error { color: #c0432e; font-size: 14px; margin: 0; }
+.login-divider { margin: 24px 0; color: #9b8c7a; text-align: center; font-size: 14px; }
+.login-card .google-login { background: white; border: 1px solid #ead9bf; color: #4a3728; }
+
 #root {
   width: 1126px;
   max-width: 100%;
