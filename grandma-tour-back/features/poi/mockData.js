@@ -25,24 +25,13 @@ const CHEONGSONG_POIS = [
   { contentid: "1015", contenttypeid: "12", title: "주왕산국립공원", addr1: "경북 청송군 주왕산면 공원길 226", mapx: "129.1476", mapy: "36.3936", tel: "", firstimage: "" },
 ];
 
-// 청송군 대표 카테고리 키워드 (POI 이름/타입 기반 매핑에 사용)
-const POI_KEYWORDS = {
-  "1001": ["자연산책", "사진명소"],
-  "1002": ["역사", "조용함"],
-  "1003": ["자연산책", "사진명소", "조용함"],
-  "1004": ["자연산책", "사진명소"],
-  "1005": ["음식", "자연산책"],
-  "1006": ["음식", "조용함"],
-  "1007": ["역사", "조용함"],
-  "1008": ["체험", "실내", "역사"],
-  "1009": ["역사", "실내", "조용함"],
-  "1010": ["실내", "조용함"],
-  "1011": ["체험", "음식"],
-  "1012": ["자연산책"],
-  "1013": ["음식", "체험"],
-};
+// POI_KEYWORDS(손으로 지어낸 POI별 키워드 맵)와 REGION_CENTERS(중심좌표 폴백)는
+// 제거했다. 전자는 keywordMapper 를 만들 때 추정값을 코드에 다시 심을 위험이 있었고
+// (키워드는 cat1/2/3 에서 유도한다), 후자는 중심 반경 방식을 폐기하면서 쓸 곳이 없어졌다.
 
-// 경북(35) 시군구 목록 mock (일부) — 실제로는 areaCode2 로 조회
+// 경북(35) 시군구 목록 — 2026-08-13 areaCode2 실호출 응답 그대로.
+// 이전 버전은 상주시부터 코드가 한 칸씩 밀려 있어 청송군을 19(=의성군)로 가리켰다.
+// 코드 5(구 군위군, 대구 편입)는 응답에 없다.
 const GYEONGBUK_SIGUNGU = [
   { code: "1", name: "경산시" },
   { code: "2", name: "경주시" },
@@ -51,35 +40,32 @@ const GYEONGBUK_SIGUNGU = [
   { code: "6", name: "김천시" },
   { code: "7", name: "문경시" },
   { code: "8", name: "봉화군" },
-  { code: "10", name: "상주시" },
-  { code: "11", name: "성주군" },
-  { code: "12", name: "안동시" },
-  { code: "13", name: "영덕군" },
-  { code: "14", name: "영양군" },
-  { code: "15", name: "영주시" },
-  { code: "16", name: "영천시" },
-  { code: "17", name: "예천군" },
-  { code: "18", name: "울릉군" },
-  { code: "19", name: "청송군" },
-  { code: "20", name: "울진군" },
-  { code: "21", name: "의성군" },
-  { code: "23", name: "청도군" },
-  { code: "24", name: "칠곡군" },
-  { code: "25", name: "포항시" },
+  { code: "9", name: "상주시" },
+  { code: "10", name: "성주군" },
+  { code: "11", name: "안동시" },
+  { code: "12", name: "영덕군" },
+  { code: "13", name: "영양군" },
+  { code: "14", name: "영주시" },
+  { code: "15", name: "영천시" },
+  { code: "16", name: "예천군" },
+  { code: "17", name: "울릉군" },
+  { code: "18", name: "울진군" },
+  { code: "19", name: "의성군" },
+  { code: "20", name: "청도군" },
+  { code: "21", name: "청송군" },
+  { code: "22", name: "칠곡군" },
+  { code: "23", name: "포항시" },
 ];
 
-// 시도 목록 mock
+// 시도 목록 mock — 전체가 아니라 개발용 일부다.
+// **직접 import 하지 말 것.** tourApiClient.getAreaCodes() 를 거쳐야
+// mock/live 가 모드에 따라 갈린다.
 const AREA_LIST = [
   { code: "1", name: "서울" },
   { code: "2", name: "인천" },
   { code: "35", name: "경상북도" },
   { code: "36", name: "경상남도" },
 ];
-
-// 지역별 기본 중심좌표(위도/경도) — 카카오 지오코딩 실패 시 폴백
-const REGION_CENTERS = {
-  청송군: { lat: 36.4363, lon: 129.057 },
-};
 
 function getMockAreaBasedList({ contentTypeIds = [] } = {}) {
   if (!contentTypeIds || contentTypeIds.length === 0) return CHEONGSONG_POIS;
@@ -92,12 +78,17 @@ function getMockSigunguList(areaCode) {
   return [];
 }
 
+function getMockAreaList() {
+  return AREA_LIST;
+}
+
 module.exports = {
+  // 상수는 테스트·검증용으로만 노출한다.
+  // 실행 경로에서는 tourApiClient 를 거쳐야 mock/live 가 모드에 따라 갈린다.
   CHEONGSONG_POIS,
-  POI_KEYWORDS,
   GYEONGBUK_SIGUNGU,
   AREA_LIST,
-  REGION_CENTERS,
   getMockAreaBasedList,
   getMockSigunguList,
+  getMockAreaList,
 };
