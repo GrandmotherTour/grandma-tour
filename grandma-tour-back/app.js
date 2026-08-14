@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const recommendationRoutes = require("./features/recommendations/routes");
 const regionRouter = require('./features/region/region.route');
+const adminPoiRoutes = require("./features/poi/routes");
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/regions', regionRouter);
 app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/admin", adminPoiRoutes);
 
 
 app.get("/", (req, res) => {
