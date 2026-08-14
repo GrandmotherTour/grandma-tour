@@ -68,6 +68,7 @@ router.get("/:id", async (req, res) => {
         });
     }
 });
+
 // 지역별 관광 포인트 목록 조회
 router.get("/:id/points", async (req, res) => {
 
@@ -78,12 +79,12 @@ router.get("/:id/points", async (req, res) => {
 
         // ② 해당 지역에 속한 관광 포인트 조회
         const [rows] = await pool.query(
-            "SELECT * FROM regions WHERE id = ?",
+            "SELECT * FROM points WHERE id = ?",
             [regionId]
         );
 
         // ③ 조회 결과 응답
-        res.json(row);
+        res.json(rows);
 
     } catch (error) {
 
