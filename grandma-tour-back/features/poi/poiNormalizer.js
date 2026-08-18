@@ -23,6 +23,7 @@ const INTRO_FIELDS = {
     // 축제/공연/행사
     useTime: "playtime",
     restDate: null,
+    useFee: "usetimefestival",
     parking: "parkingfestival",
     babyCarriage: null,
     pet: null,
