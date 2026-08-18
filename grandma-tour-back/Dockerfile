@@ -1,15 +1,20 @@
-FROM node:20-alpine
+FROM node:20-bookworm-slim
 
 WORKDIR /app
 
-# 레이어 캐시 최적화: package 파일 우선 복사
-COPY package.json package-lock.json* ./
+# Python (3.11) + pip 설치 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
-# 의존성 설치 및 찌꺼기 삭제 (Clean build)
+# OR-Tools 설치
+RUN pip3 install --break-system-packages ortools
+
+# Node 의존성 설치
+COPY package.json package-lock.json* ./
 RUN npm install && npm cache clean --force
 
-# 나머지 소스 복사
+# 소스 복사
 COPY . .
 
-# package.json에 정의된 start 명령어(nodemon) 실행
 CMD ["npm", "start"]

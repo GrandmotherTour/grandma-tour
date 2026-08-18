@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const recommendationRoutes = require("./features/recommendations/routes");
+const recommendationRoutes = require("./features/recommendations/recommendations.route");
 const regionRouter = require('./features/region/region.route');
 const adminPoiRoutes = require("./features/poi/routes");
 
