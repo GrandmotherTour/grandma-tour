@@ -75,9 +75,11 @@ const sqlQueries = {
       start_min,
       end_min,
       min_points,
-      max_points
+      max_points,
+      travel_date,
+      include_festival
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
 
   // 7. 방금 저장한 설문 ID 조회
@@ -387,7 +389,8 @@ const sqlQueries = {
       p.close_min,
       p.reservation_required,
       k.id AS keyword_id,
-      k.name AS keyword_name,
+      k.name AS keyword_n
+      ame,
       k.type AS keyword_type
     FROM points p
     LEFT JOIN point_keywords pk ON pk.point_id = p.id

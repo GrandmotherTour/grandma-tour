@@ -305,6 +305,34 @@ async function getAreaPois({
   return collected;
 }
 
+async function getFestivals({
+  eventStartDate,
+  eventEndDate,
+  lDongRegnCd,
+  lDongSignguCd,
+  numOfRows = 100,
+  pageNo = 1,
+  arrange = "C",
+} = {}) {
+  if (isMockMode()) return [];
+
+  if (!eventStartDate) {
+    throw new Error("eventStartDate is required");
+  }
+
+  const json = await requestJson("searchFestival2", {
+    numOfRows,
+    pageNo,
+    arrange,
+    eventStartDate,
+    eventEndDate,
+    lDongRegnCd,
+    lDongSignguCd,
+  });
+
+  return extractItems(json);
+}
+
 // 위치기반 관광정보 목록 (locationBasedList2).
 // 중심좌표 + 반경으로 조회하므로 하버사인 필터링이 불필요하고,
 // 응답에 중심까지의 거리(dist, 미터)가 포함된다 — 단 미검증. (spec STEP 2)
@@ -398,6 +426,7 @@ module.exports = {
   getSourceMode,
   getCallStats,
   resetCallStats,
+  getFestivals,
 
   // 코드 조회
   getAreaCodes,
