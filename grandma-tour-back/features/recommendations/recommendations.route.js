@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const pool = require("../../config/db");
+const recommendationController = require("./controller");
 
-
-// 여기에 설문조사 / 추천 기능 작성
-
+// 추천 코스 조회
+router.get("/", recommendationController.getRecommendations);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 # Top 3 계산
-
+# Node.js의 service 데이터를 python에 전달
 
 import json
 import sys
