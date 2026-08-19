@@ -7,7 +7,6 @@ ON DUPLICATE KEY UPDATE
   email = VALUES(email),
   password_hash = VALUES(password_hash),
   name = VALUES(name);
-
 INSERT INTO regions (id, name, description, image_url)
 VALUES
   (1, '경북 청송', '주왕산, 주산지, 고택과 지역 체험을 중심으로 한 할매투어 샘플 지역', NULL)
@@ -32,7 +31,7 @@ ON DUPLICATE KEY UPDATE
   profile_image_url = VALUES(profile_image_url);
 
 INSERT INTO keywords (id, name, type)
-VALUES
+VALUE
   (1, '역사', 'preference'),
   (2, '전통시장', 'preference'),
   (3, '자연산책', 'preference'),
@@ -61,8 +60,8 @@ INSERT INTO points (
 VALUES
   (1, 1, 1, '주왕산국립공원', '청송 대표 자연 명소를 걷는 샘플 포인트', NULL, 90, 540, 1080, FALSE, TRUE),
   (2, 1, 2, '주산지', '물안개와 왕버들 풍경을 보는 샘플 포인트', NULL, 60, 540, 1080, FALSE, TRUE),
-  (3, 1, 3, '송소고택', '청송의 고택 문화를 느끼는 샘플 포인트', NULL, 70, 540, 1020, FALSE, TRUE),
-  (4, 1, 4, '청송백자전수관', '청송백자와 공예 체험을 연결한 샘플 포인트', NULL, 60, 600, 1020, TRUE, TRUE),
+  (3, 1, 3, '송소고택', '청송의 고택 문화를 느껴보는 샘플 포인트', NULL, 70, 540, 1020, FALSE, TRUE),
+  (4, 1, 4, '청송백자전수관', '청송백자 공예 체험과 연결한 샘플 포인트', NULL, 60, 600, 1020, TRUE, TRUE),
   (5, 1, 5, '청송사과테마파크', '청송사과와 지역 먹거리 체험을 위한 샘플 포인트', NULL, 50, 540, 1080, FALSE, TRUE),
   (6, 1, 6, '청송 얼음골', '계절 자연 경관과 시원한 계곡을 보는 샘플 포인트', NULL, 55, 540, 1080, FALSE, TRUE),
   (7, 1, 7, '객주문학관', '문학과 지역 이야기를 조용히 관람하는 샘플 포인트', NULL, 55, 600, 1020, FALSE, TRUE)
