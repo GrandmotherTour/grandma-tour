@@ -4,13 +4,26 @@ const pool = require("../../config/db");
 
 async function getSurvey(surveyId) {
   const [rows] = await pool.query(
-    `SELECT id, user_id, region_id, budget, start_min, end_min, min_points, max_points
+    `SELECT id, user_id, region_id, budget, start_min, end_min, min_points, max_points, travel_date, include_festival, created_at
      FROM preference_surveys
      WHERE id = ?`,
     [surveyId]
   );
   return rows[0];
 }
+
+async function getRegion(regionId) {
+  const [rows] = await pool.query(
+    `SELECT id, name, area_code, sigungu_code,
+            l_dong_regn_cd, l_dong_signgu_cd
+     FROM regions
+     WHERE id = ?`,
+    [regionId]
+  );
+
+  return rows[0];
+}
+
 
 async function getSurveyKeywordIds(surveyId, usageType) {
   const [rows] = await pool.query(
@@ -79,6 +92,7 @@ async function loadRecommendationInput(surveyId, transportMode = "taxi") {
 
   const selectedKeywordIds = await getSurveyKeywordIds(surveyId, "selected");
   const excludedKeywordIds = await getSurveyKeywordIds(surveyId, "excluded");
+  const region = await getRegion(survey.region_id);
   const points = await getCandidatePoints(survey.region_id);
   const pointKeywords = await getPointKeywords(points.map((point) => point.id));
   const travelTimes = await getTravelTimes(survey.region_id, transportMode);
@@ -87,6 +101,7 @@ async function loadRecommendationInput(surveyId, transportMode = "taxi") {
     survey,
     selectedKeywordIds,
     excludedKeywordIds,
+    region,
     points,
     pointKeywords,
     travelTimes,

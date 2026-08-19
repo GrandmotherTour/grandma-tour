@@ -75,7 +75,7 @@ function resolveDuration(poi) {
   // ── 1. TourAPI 명시 필드 ──
   // 여행코스(25)의 taketime 이 대표적. 그 외 타입엔 사실상 없다.
   const explicit =
-    intro.taketime ?? intro.taketimeleports ?? common.taketime ?? null;
+    intro.taketime ?? intro.taketimeleports ?? intro.spendtimefestival ?? common.taketime ?? null;
   if (explicit != null) {
     const parsed = parseDurationText(explicit);
     if (parsed != null) return { value: parsed, source: "tourapi" };

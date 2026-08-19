@@ -1,28 +1,3 @@
-// 운영 거점 선정 파이프라인
-//
-// ── 이 파일이 답하는 질문 ────────────────────────────────────────
-//   "이 지역에서 실제로 어떤 4~5곳에 가이드를 상주시킬 것인가"
-//
-// CP-SAT 이 답하는 질문("이 사용자가 어디를 어떤 순서로 갈 것인가")과 다르다.
-// CP-SAT 은 입력을 **이미 가이드가 배치된 거점 집합**으로 전제하며,
-// 그 집합을 만드는 것이 이 파일의 책임이다.
-// 따라서 방문 순서·120분 예산 소진·사용자 선호 압축은 여기서 하지 않는다.
-// (docs/poi-selection-refactor-inventory.md §0)
-//
-// ── 단계 ────────────────────────────────────────────────────────
-//   1. 수집          TourAPI areaBasedList2
-//   2. 정규화·정제    poiNormalizer + 중복 제거
-//   3. 상세 보강      detailCommon/Intro → operatingHoursParser, durationResolver
-//   4. 운영 후보 판정  valid / needs_review / unavailable
-//   5. 이동시간 행렬   travelTimeService
-//   6. 공간 구조 분석  ※ 판정하지 않는다. 분포만 관측한다.
-//   7. 거점 4~5개 선정 ※ 미구현 — 선정 기준 미확정
-//
-// ── 필드 명명 ───────────────────────────────────────────────────
-// 파이프라인 내부는 snake_case(DB 컬럼과 일치)를 쓴다.
-// 화면·repository 가 쓰는 camelCase 로의 변환은 경계에서만 — toLegacyShape().
-// (inventory §3, 결정 A)
-
 const tourApi = require("./tourApiClient");
 const poiNormalizer = require("./poiNormalizer");
 const { applyOperatingHours } = require("./operatingHoursParser");
@@ -369,7 +344,7 @@ async function runSelectionPipeline(conditions) {
     areaCode = "35", // 경상북도
     sigunguCode = "21", // 청송군 (19 는 의성군 — 2026-08-13 areaCode2 로 확인)
     sigunguName = "청송군",
-    contentTypeIds = [12, 14, 28, 39],
+    contentTypeIds = [12, 14, 28, 38, 39],
     detailLimit = 60,
     fetchImages = false,
     maxMatrixPoints = 40,
@@ -393,6 +368,13 @@ async function runSelectionPipeline(conditions) {
     sigunguCode,
     contentTypeIds,
   });
+
+  const legalCodeSource = rawItems.find(
+    (item) => item.lDongRegnCd && item.lDongSignguCd
+  );
+
+  const lDongRegnCd = legalCodeSource?.lDongRegnCd ?? null;
+  const lDongSignguCd = legalCodeSource?.lDongSignguCd ?? null;
 
   const byType = {};
   for (const item of rawItems) {
@@ -956,6 +938,10 @@ async function runSelectionPipeline(conditions) {
     regions,
     // STEP 7 결과. 권역별 4개·5개를 따로 담는다.
     regionCandidates,
+
+    lDongRegnCd,
+    lDongSignguCd,
+
     conditions: {
       contentTypeIds,
       detailLimit,

@@ -1,0 +1,8 @@
+USE halmae_tour;
+
+ALTER TABLE poi_candidates
+  ADD COLUMN use_fee_raw TEXT NULL,
+  ADD COLUMN cost_min INT UNSIGNED NULL,
+  ADD COLUMN cost_max INT UNSIGNED NULL,
+  ADD COLUMN cost_source VARCHAR(50) NULL,
+  ADD COLUMN cost_known TINYINT(1) NOT NULL DEFAULT 0;

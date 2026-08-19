@@ -3,7 +3,7 @@ services:
     build:
       context: ./grandma-tour-back
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./grandma-tour-back:/app
       - /app/node_modules
@@ -17,6 +17,7 @@ services:
       # env_file 보다 environment 가 우선하므로 .env 의 127.0.0.1:3307 을 덮는다.
       - DB_HOST=mysql
       - DB_PORT=3306
+      - PYTHON_BIN=python3
     depends_on:
       mysql:
         condition: service_healthy
@@ -31,6 +32,11 @@ services:
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true # for vite hot reload on some OS/docker combo
+      # vite dev 프록시가 /api 를 넘길 대상. 컨테이너 안에서는 호스트 매핑 포트가 아니라
+      # backend 서비스의 내부 포트를 봐야 한다.
+      - VITE_API_TARGET=http://backend:3000
+    depends_on:
+      - backend
 
   mysql:
     image: mysql:8.0
@@ -50,6 +56,8 @@ services:
       #         < database/migrations/001_poi_selection.sql
       - ./database/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
       - ./database/migrations/001_poi_selection.sql:/docker-entrypoint-initdb.d/02_poi_selection.sql:ro
+      - ./database/migrations/002_survey_v2_vocabulary.sql:/docker-entrypoint-initdb.d/03_survey_v2_vocabulary.sql:ro
+      - ./database/migrations/003_hub_promotion.sql:/docker-entrypoint-initdb.d/04_hub_promotion.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD}"]
       interval: 5s

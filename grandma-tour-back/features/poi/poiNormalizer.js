@@ -1,31 +1,9 @@
-// TourAPI 원본 응답 → 우리 POI 형식으로 통일
-//
-// ── 이 파일의 책임 범위 ──────────────────────────────────────────────
-// 구조 변환만 한다. 필드명을 우리 이름으로 바꾸고, 타입을 맞추고,
-// 여러 응답(목록 + detailCommon + detailIntro + 무장애)을 POI 하나로 합친다.
-//
-// 판단은 하지 않는다:
-//   - 운영시간 문자열 파싱 → operatingHoursParser
-//   - 체류시간 결정        → durationResolver
-//   - 키워드 부여          → keywordMapper
-// 위 세 값의 자리(open_windows / duration_min / keywords)는 만들어 두되
-// null 로 비워서 넘긴다. 뒤 단계가 채우고 sources 에 근거를 남긴다.
-//
-// 이 파일이 있는 이유: 이후 코드가 TourAPI 의 필드명을 몰라도 되게 하기 위해서다.
-
-// ---------- detailIntro2 필드명 대응표 ----------
-//
-// **중요**: detailIntro2 는 contentTypeId 마다 필드명이 다르다.
-// 관광지는 usetime 이지만 문화시설은 usetimeculture, 음식점은 opentimefood 다.
-// (기존 controller.js 는 `intro.usetime || intro.opentime` 만 봤기 때문에
-//  문화시설·레포츠·음식점의 운영시간을 단 한 건도 읽지 못하고 있었다.)
-//
-// 미검증 — 키 발급 후 실제 응답으로 필드명을 확인할 것.
 const INTRO_FIELDS = {
   12: {
     // 관광지
     useTime: "usetime",
     restDate: "restdate",
+    useFee: null,
     parking: "parking",
     babyCarriage: "chkbabycarriage",
     pet: "chkpet",
@@ -34,6 +12,7 @@ const INTRO_FIELDS = {
   14: {
     // 문화시설
     useTime: "usetimeculture",
+    useFee: "usefee",
     restDate: "restdateculture",
     parking: "parkingculture",
     babyCarriage: "chkbabycarriageculture",
@@ -44,6 +23,7 @@ const INTRO_FIELDS = {
     // 축제/공연/행사
     useTime: "playtime",
     restDate: null,
+    useFee: "usetimefestival",
     parking: "parkingfestival",
     babyCarriage: null,
     pet: null,
@@ -61,6 +41,7 @@ const INTRO_FIELDS = {
   28: {
     // 레포츠
     useTime: "usetimeleports",
+    useFee: "usefeeleports",
     restDate: "restdateleports",
     parking: "parkingleports",
     babyCarriage: "chkbabycarriageleports",
@@ -80,6 +61,7 @@ const INTRO_FIELDS = {
     // 음식점 — usetime 이 아니라 opentimefood 다
     useTime: "opentimefood",
     restDate: "restdatefood",
+    useFee: null,
     parking: "parkingfood",
     babyCarriage: null,
     pet: null,
@@ -181,6 +163,10 @@ function normalizeListItem(raw, { source = "areaBasedList2" } = {}) {
     description: null, // detailCommon2 로 채움
 
     // ── 뒤 단계가 채우는 자리 ──
+    use_time_raw: null,   // detailIntro2 운영시간 원문
+    rest_date_raw: null,  // detailIntro2 휴무일 원문
+    use_fee_raw: null,    // detailIntro2 이용요금 원문
+    
     open_windows: null, // operatingHoursParser
     rest_days: null, // operatingHoursParser
     duration_min: null, // durationResolver
@@ -262,6 +248,7 @@ function mergeDetailIntro(poi, intro) {
   // 운영시간·휴무일은 자유 텍스트 원문 그대로 보관 → operatingHoursParser 가 해석
   poi.use_time_raw = fields.useTime ? textOrNull(intro[fields.useTime]) : null;
   poi.rest_date_raw = fields.restDate ? textOrNull(intro[fields.restDate]) : null;
+  poi.use_fee_raw = fields.useFee ? textOrNull(intro[fields.useFee]) : null;
 
   poi.accessibility.parking = fields.parking
     ? toTriState(intro[fields.parking])
