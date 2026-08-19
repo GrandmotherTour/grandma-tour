@@ -1,0 +1,299 @@
+.auth-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  background: #111210;
+  color: #f3f0e8;
+}
+
+.auth-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+
+  overflow: hidden;
+  background: #171816;
+}
+
+.auth-content {
+  position: relative;
+  z-index: 10;
+
+  padding: 110px 42px 0;
+  text-align: center;
+}
+
+.auth-content h1 {
+  margin: 0;
+
+  font-size: 27px;
+  font-weight: 600;
+}
+
+.auth-description {
+  margin-top: 20px;
+  margin-bottom: 44px;
+
+  color: #c9c7bf;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-button {
+  width: 100%;
+  height: 86px;
+
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.auth-button:active {
+  transform: scale(0.98);
+}
+
+.auth-button span {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.auth-button strong {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.auth-button.primary {
+  border: none;
+
+  background: #858f5b;
+  color: #f7f5eb;
+}
+
+.auth-button.secondary {
+  border: 1px solid #777871;
+
+  background: transparent;
+  color: #f3f0e8;
+}
+
+
+/* 아래 풍경 */
+
+.auth-landscape {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 210px;
+}
+
+.auth-ground {
+  position: absolute;
+
+  left: -20px;
+  bottom: -45px;
+
+  width: 470px;
+  height: 150px;
+
+  border-radius: 50% 50% 0 0;
+  background: #414a32;
+}
+
+
+/* 구름 */
+
+.auth-cloud {
+  position: absolute;
+
+  width: 90px;
+  height: 28px;
+
+  border-radius: 40px;
+  background: #eee9dd;
+}
+
+.auth-cloud::before,
+.auth-cloud::after {
+  content: '';
+
+  position: absolute;
+
+  border-radius: 50%;
+  background: #eee9dd;
+}
+
+.auth-cloud::before {
+  width: 45px;
+  height: 45px;
+
+  left: 12px;
+  bottom: 0;
+}
+
+.auth-cloud::after {
+  width: 55px;
+  height: 55px;
+
+  right: 4px;
+  bottom: 0;
+}
+
+.cloud-a {
+  left: 35px;
+  top: 45px;
+
+  transform: scale(0.7);
+}
+
+.cloud-b {
+  right: 42px;
+  top: 25px;
+
+  transform: scale(0.85);
+}
+
+
+/* 나무 */
+
+.auth-tree {
+  position: absolute;
+  z-index: 4;
+
+  width: 34px;
+  height: 40px;
+
+  border-radius: 50%;
+  background: #56613c;
+}
+
+.auth-tree::after {
+  content: '';
+
+  position: absolute;
+
+  width: 5px;
+  height: 30px;
+
+  left: 50%;
+  top: 30px;
+
+  transform: translateX(-50%);
+
+  background: #423e2e;
+}
+
+.tree-a {
+  left: 48px;
+  bottom: 47px;
+}
+
+.tree-b {
+  left: 83px;
+  bottom: 38px;
+
+  transform: scale(0.8);
+}
+
+.tree-c {
+  left: 115px;
+  bottom: 48px;
+
+  transform: scale(0.9);
+}
+
+
+/* 집 */
+
+.auth-house {
+  position: absolute;
+  z-index: 5;
+
+  right: 70px;
+  bottom: 35px;
+
+  width: 120px;
+  height: 85px;
+}
+
+.auth-roof {
+  position: absolute;
+
+  width: 135px;
+  height: 28px;
+
+  left: -8px;
+  top: 5px;
+
+  background: #292a25;
+
+  clip-path: polygon(
+    12% 100%,
+    25% 15%,
+    75% 15%,
+    90% 100%
+  );
+}
+
+.auth-house-body {
+  position: absolute;
+
+  width: 105px;
+  height: 53px;
+
+  left: 7px;
+  bottom: 0;
+
+  border: 5px solid #39372e;
+
+  background: #c6bba1;
+}
+
+.auth-window {
+  position: absolute;
+
+  width: 25px;
+  height: 22px;
+
+  left: 12px;
+  top: 8px;
+
+  border: 3px solid #454137;
+  background: #ded3bb;
+}
+
+.auth-door {
+  position: absolute;
+
+  right: 13px;
+  bottom: 0;
+
+  width: 27px;
+  height: 37px;
+
+  background: #4a473c;
+}
