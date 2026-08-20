@@ -2,14 +2,19 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# 레이어 캐시 최적화: package 파일 우선 복사
-COPY package.json package-lock.json* ./
+# 의존성 파일 먼저 복사
+COPY package.json package-lock.json ./
 
-# 의존성 설치 및 찌꺼기 삭제 (Clean build)
-RUN npm install && npm cache clean --force
+# package-lock 기준으로 정확하게 설치
+RUN npm ci
 
-# 나머지 소스 복사
+# 소스코드 복사
 COPY . .
 
-# 외부(호스트) 접속 허용을 위한 --host 플래그 추가
-CMD ["npm", "run", "dev", "--", "--host"]
+EXPOSE 5173
+
+
+
+
+# Vite 개발 서버
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

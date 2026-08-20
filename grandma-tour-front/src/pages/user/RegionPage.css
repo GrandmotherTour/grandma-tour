@@ -1,0 +1,128 @@
+.region-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  background: #111210;
+  color: #f3f0e8;
+}
+
+.region-container {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #171816;
+}
+
+
+/* 상단 */
+
+.region-header {
+  padding: 30px 24px 20px;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.back-button {
+  border: none;
+  background: none;
+
+  color: #f3f0e8;
+
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.region-header h1 {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.region-header p {
+  margin: 8px 0 0;
+
+  color: #aaa9a2;
+
+  font-size: 13px;
+}
+
+
+/* 지도 */
+
+.map-area {
+  width: 100%;
+  height: 470px;
+}
+
+.region-map {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* 지도 아래 정보 */
+
+.region-info {
+  flex: 1;
+
+  padding: 26px 28px 32px;
+
+  background: #1c1d1a;
+}
+
+.region-label {
+  color: #9ba873;
+
+  font-size: 12px;
+}
+
+.region-info h2 {
+  margin: 7px 0 10px;
+
+  font-size: 23px;
+}
+
+.region-info p {
+  margin: 0 0 25px;
+
+  color: #b9b8b0;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* 선택 버튼 */
+
+.select-region-button {
+  width: 100%;
+  height: 55px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #858f5b;
+  color: white;
+
+  font-family: inherit;
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.select-region-button:disabled {
+  background: #343532;
+  color: #777873;
+
+  cursor: default;
+}
