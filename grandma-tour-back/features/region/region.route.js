@@ -42,10 +42,11 @@ router.get("/:id", async (req, res) => {
 
 
         // DB에서 해당 id의 지역 조회하기
+        // 지역 상세 조회
         const [rows] = await pool.query(
-        "SELECT * FROM regions WHERE id = ?",
-        [regionId]
-        );
+            "SELECT * FROM regions WHERE id = ?",
+            [regionId]
+);
 
 
         // 해당 지역이 없으면 404 응답하기
@@ -78,8 +79,9 @@ router.get("/:id/points", async (req, res) => {
         const regionId = req.params.id;
 
         // ② 해당 지역에 속한 관광 포인트 조회
+       // 지역별 관광 포인트 목록 조회
         const [rows] = await pool.query(
-            "SELECT * FROM points WHERE id = ?",
+            "SELECT * FROM points WHERE region_id = ?",
             [regionId]
         );
 
@@ -92,6 +94,33 @@ router.get("/:id/points", async (req, res) => {
 
         res.status(500).json({
             message: "관광 포인트 목록을 불러오지 못했습니다."
+        });
+    }
+});
+// 지역별 관광 포인트 상세 조회
+router.get("/:id/points/:pointId", async (req, res) => {
+    try {
+        const regionId = req.params.id;
+        const pointId = req.params.pointId;
+
+        const [rows] = await pool.query(
+            "SELECT * FROM points WHERE id = ? AND region_id = ?",
+            [pointId, regionId]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({
+                message: "관광 포인트를 찾을 수 없습니다."
+            });
+        }
+
+        res.json(rows[0]);
+
+    } catch (error) {
+        console.error("관광 포인트 상세 조회 오류:", error);
+
+        res.status(500).json({
+            message: "관광 포인트 정보를 불러오지 못했습니다."
         });
     }
 });
