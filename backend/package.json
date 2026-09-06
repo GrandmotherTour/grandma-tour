@@ -1,0 +1,25 @@
+{
+  "name": "jaturip-backend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": ".\\.tools\\node-v22.22.0-win-x64\\node.exe scripts/dev-runner.cjs",
+    "build": ".\\.tools\\node-v22.22.0-win-x64\\node.exe .\\node_modules\\typescript\\bin\\tsc",
+    "start": ".\\.tools\\node-v22.22.0-win-x64\\node.exe dist/server.js",
+    "node:version": ".\\.tools\\node-v22.22.0-win-x64\\node.exe --version"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.5.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.5",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

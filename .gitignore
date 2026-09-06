@@ -1,37 +1,10 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Node / Dependencies
-node_modules/
-
-# Build / Production
-dist/
-dist-ssr/
-build/
-*.local
-
-# Environment Variables
+node_modules
+.DS_Store
 .env
 .env.*
-!.env.example
-
-# Editor / OS
-.DS_Store
-.vscode/*
-!.vscode/extensions.json
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# 로컬 산출물 (배포/패치)
-*.patch
-*.bundle
+dist
+build
+coverage
+npm-debug.log*
+.vite
+*.log
