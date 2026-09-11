@@ -31,12 +31,17 @@ ON DUPLICATE KEY UPDATE
   intro = VALUES(intro),
   profile_image_url = VALUES(profile_image_url);
 
+-- preference 어휘는 설문v1(집단 사전 설문)의 5종과 같아야 한다.
+-- keywordMapper.PREFERENCE_CATEGORIES 와 문자열까지 일치시킨다 —
+-- v1 이 판정한 preference_category 를 변환표 없이 그대로 쓸 수 있어야 하기 때문이다.
+-- environment 는 관광 선호가 아니라 운영 조건 축이라 v1 과 무관하게 유지한다.
+-- (id 4 는 옛 '사진명소' 자리다. v1 이 의도적으로 제외한 축이라 비워 둔다 —
+--  migrations/002_survey_v2_vocabulary.sql 참조)
 INSERT INTO keywords (id, name, type)
 VALUES
-  (1, '역사', 'preference'),
-  (2, '전통시장', 'preference'),
-  (3, '자연산책', 'preference'),
-  (4, '사진명소', 'preference'),
+  (1, '역사·문화', 'preference'),
+  (2, '시장·지역생활', 'preference'),
+  (3, '자연', 'preference'),
   (5, '음식', 'preference'),
   (6, '체험', 'preference'),
   (7, '조용함', 'environment'),
@@ -81,15 +86,17 @@ ON DUPLICATE KEY UPDATE
 DELETE FROM point_keywords
 WHERE point_id BETWEEN 1 AND 7;
 
+-- preference 는 POI 하나당 주 카테고리 하나만 붙인다(v1 설계원칙 2).
+-- environment 는 별개 축이라 복수로 붙어도 된다.
 INSERT INTO point_keywords (point_id, keyword_id)
 VALUES
-  (1, 3), (1, 4),
-  (2, 3), (2, 4), (2, 7),
-  (3, 1), (3, 7),
-  (4, 6), (4, 8),
-  (5, 5), (5, 6),
-  (6, 3), (6, 4),
-  (7, 1), (7, 8), (7, 7);
+  (1, 3),                    -- 주왕산국립공원   자연
+  (2, 3), (2, 7),            -- 주산지           자연 + 조용함
+  (3, 1), (3, 7),            -- 송소고택         역사·문화 + 조용함
+  (4, 6), (4, 8),            -- 청송백자전수관   체험 + 실내
+  (5, 5),                    -- 청송사과테마파크 음식
+  (6, 3),                    -- 청송 얼음골      자연
+  (7, 1), (7, 8), (7, 7);    -- 객주문학관       역사·문화 + 실내 + 조용함
 
 INSERT INTO preference_surveys (
   id,
@@ -117,10 +124,9 @@ WHERE survey_id = 1;
 
 INSERT INTO survey_keywords (survey_id, keyword_id, usage_type)
 VALUES
-  (1, 1, 'selected'),
-  (1, 3, 'selected'),
-  (1, 4, 'selected'),
-  (1, 5, 'selected');
+  (1, 1, 'selected'),   -- 역사·문화
+  (1, 3, 'selected'),   -- 자연
+  (1, 5, 'selected');   -- 음식
 
 INSERT INTO travel_time_cache (
   from_point_id,

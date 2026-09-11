@@ -15,4 +15,11 @@ router.post("/regions/runs", controller.saveSelectionRun);
 router.get("/regions/runs", controller.listSelectionRuns);
 router.get("/regions/runs/:runId/combinations", controller.getRunCombinations);
 
+// 조합 확정 — poi_candidates → points 승격.
+// 여기서부터 설문v2(CP-SAT) 루트 생성의 대상이 된다.
+router.post(
+  "/regions/runs/:runId/combinations/:combinationId/promote",
+  controller.promoteCombination
+);
+
 module.exports = router;
