@@ -13,6 +13,32 @@ COVERAGE_BONUS = 15
 DEFAULT_TRAVEL_MIN = 20
 
 
+def hours_known(point):
+    """운영시간을 읽어냈는지. 승격된 거점은 NULL 일 수 있다."""
+    return point.get("open_min") is not None and point.get("close_min") is not None
+
+
+def time_window(point, survey):
+    """
+    이 POI 에 적용할 시간창(분).
+
+    ⚠ 임시 처리다. 운영시간 정책은 다른 API 를 확보한 뒤 정한다.
+    운영시간을 못 읽은 거점(open_min/close_min = NULL)은 설문 시간창을 그대로 쓴다
+    — 즉 시간 제약이 없는 것으로 본다. 09:00~18:00 같은 값을 지어내지 않기 위해서다.
+    대신 그 사실을 stops[].hoursUnknown 으로 응답까지 실어 보낸다.
+
+    @returns (lo, hi) — 시작 가능 시각의 하한/상한. lo > hi 면 방문 불가.
+    """
+    duration = int(point["duration_min"])
+    if hours_known(point):
+        lo = max(int(point["open_min"]), int(survey["start_min"]))
+        hi = min(int(point["close_min"]) - duration, int(survey["end_min"]) - duration)
+    else:
+        lo = int(survey["start_min"])
+        hi = int(survey["end_min"]) - duration
+    return lo, hi
+
+
 def main():
     payload = json.loads(sys.stdin.read())
     routes = recommend(payload, top_n=int(payload.get("topN", 3)))
@@ -34,11 +60,7 @@ def recommend(payload, top_n=3):
         if point_keywords.get(point_id, set()) & excluded:
             continue
 
-        lo = max(int(point["open_min"]), int(survey["start_min"]))
-        hi = min(
-            int(point["close_min"]) - int(point["duration_min"]),
-            int(survey["end_min"]) - int(point["duration_min"]),
-        )
+        lo, hi = time_window(point, survey)
         if lo <= hi:
             points.append(point)
 
@@ -102,11 +124,7 @@ def solve_once(survey, points, point_keywords, selected, travel, route_len, excl
 
     start = {}
     for i, point in enumerate(points):
-        lo = max(int(point["open_min"]), int(survey["start_min"]))
-        hi = min(
-            int(point["close_min"]) - int(point["duration_min"]),
-            int(survey["end_min"]) - int(point["duration_min"]),
-        )
+        lo, hi = time_window(point, survey)
 
         domain = cp_model.Domain.from_intervals([[-1, -1], [lo, hi]])
         start[i] = model.new_int_var_from_domain(domain, f"start[{i}]")
@@ -256,6 +274,8 @@ def read_solution(solver, status, points, route_indices, start, point_keywords, 
             "visitOrder": order,
             "arrivalMin": solver.value(start[point_index]),
             "stayMin": int(point["duration_min"]),
+            # 운영시간을 모르는 채로 배치된 거점. 화면이 이 사실을 표시해야 한다.
+            "hoursUnknown": not hours_known(point),
         })
 
     total_duration = (

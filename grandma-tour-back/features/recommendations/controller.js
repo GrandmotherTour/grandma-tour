@@ -4,7 +4,7 @@ const recommendationService = require("./service");
 
 async function getRecommendations(req, res, next) {
   try {
-    const surveyId = Number(req.query.surveyId);
+    const surveyId = Number(req.query.surveyId); // Url의 쿼리 파라미터 : surveyId -> 필수, topN -> 선택, default 3
     const topN = Number(req.query.topN || 3);
 
     if (!surveyId) {
